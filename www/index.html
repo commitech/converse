@@ -3,6 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+    <meta http-equiv="Content-Security-Policy" content="default-src *; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' 'unsafe-eval' nathanajah.me:*"> 
     <title></title>
 
     <link href="lib/ionic/css/ionic.css" rel="stylesheet">
@@ -21,6 +22,7 @@
     <!-- your app's js -->
     <script src="js/app.js"></script>
     <script src="js/controllers/login.js"></script>
+    <script src="js/services/AuthService.js"></script>
   </head>
   <body ng-app="converse" ng-controller="LoginController">
 
@@ -31,15 +33,15 @@
       <ion-content>
         <label class="item item-input">
           <span class="input-label">Username</span>
-          <input type="text"> </input>
+          <input type="text" ng-model="credentials.username"> </input>
         </label>
         <label class="item item-input">
           <span class="input-label">Password</span>
-          <input type="text"> </input>
+          <input type="text" ng-model="credentials.password"> </input>
         </label>
         <button class="button" ng-click="login()"> Login </button>
         <button class="button" ng-click="me()"> Me </button>
-        <p> {{loginResponse}} </p>
+        <p>{{loginResponse}} </p>
         <p> {{ loginError }} </p>
         <p> {{ meResponse }} </p>
         <p> {{ meError }} </p>
