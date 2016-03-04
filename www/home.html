@@ -1,0 +1,24 @@
+<ion-pane ng-controller="HomeController">
+  <ion-header-bar class="bar-stable">
+    <h1 class="title">Duty Schedule</h1>
+  </ion-header-bar>
+  <ion-content class="has-tabs">
+    <div class="row" ng-repeat="schedule in dutySchedule">
+      <div class="col col-50">
+        {{duties[schedule.duty_id].start_time}} - {{duties[schedule.duty_id].end_time}}
+      </div>
+      <div class="col col-50">
+        {{users[schedule.supervisor_id].name}}
+      </div>
+    </div>
+  </ion-content>
+  <ion-footer-bar class="bar-stable">
+    <div class="buttons">
+      <button class="button" ng-click='prevDay()'>Prev</button>
+    </div>
+    <h1 class="title"> {{date | date:'EEEE, d MMMM yyyy'}}</h1>
+    <div class="buttons">
+      <button class="button" ng-click='nextDay()'>Next</button>
+    </div>
+  </ion-footer-bar>
+</ion-pane>

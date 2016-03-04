@@ -1,5 +1,5 @@
 var module = angular.module('converse')
-.factory('login', ['$http', 'URLS', function($http, URLS) {
+.factory('AuthService', ['$http', 'URLS', function($http, URLS) {
   return function(username, password) {
     return $http({
       method: 'POST',

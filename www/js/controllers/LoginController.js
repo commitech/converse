@@ -1,5 +1,5 @@
 angular.module('converse')
-.controller('LoginController', ['$scope', '$http', 'login', 'URLS', function($scope, $http, login, URLS) {
+.controller('LoginController', ['$scope', '$http', 'AuthService', 'URLS', function($scope, $http, login, URLS) {
   $scope.loginResponse = "";
   $scope.loginError = "";
   $scope.meResponse = "";

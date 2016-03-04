@@ -21,31 +21,13 @@
 
     <!-- your app's js -->
     <script src="js/app.js"></script>
-    <script src="js/controllers/login.js"></script>
+    <script src="js/controllers/LoginController.js"></script>
+    <script src="js/controllers/HomeController.js"></script>
+    <script src="js/services/DutyService.js"></script>
+    <script src="js/services/UserService.js"></script>
     <script src="js/services/AuthService.js"></script>
   </head>
-  <body ng-app="converse" ng-controller="LoginController">
-
-    <ion-pane>
-      <ion-header-bar class="bar-stable">
-        <h1 class="title">Ionic Blank Starter</h1>
-      </ion-header-bar>
-      <ion-content>
-        <label class="item item-input">
-          <span class="input-label">Username</span>
-          <input type="text" ng-model="credentials.username"> </input>
-        </label>
-        <label class="item item-input">
-          <span class="input-label">Password</span>
-          <input type="text" ng-model="credentials.password"> </input>
-        </label>
-        <button class="button" ng-click="login()"> Login </button>
-        <button class="button" ng-click="me()"> Me </button>
-        <p>{{loginResponse}} </p>
-        <p> {{ loginError }} </p>
-        <p> {{ meResponse }} </p>
-        <p> {{ meError }} </p>
-      </ion-content>
-    </ion-pane>
+  <body ng-app="converse">
+    <ion-nav-view></ion-nav-view>
   </body>
 </html>

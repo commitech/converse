@@ -7,6 +7,25 @@ angular.module('converse', ['ionic'])
 .constant("URLS", {
   "BASE": "http://nathanajah.me:3000"
 })
+.config(['$stateProvider',
+        '$urlRouterProvider',
+        function($stateProvider, $urlRouterProvider) {
+          $urlRouterProvider.otherwise('/')
+
+          $stateProvider.state('login', {
+            url: '/login',
+            templateUrl: 'login.html'
+          });
+
+          $stateProvider.state('home', {
+            url: '/',
+            templateUrl: 'home.html' 
+          });
+        }
+])
+.config(['$ionicConfigProvider', function($ionicConfigProvider) {
+  $ionicConfigProvider.tabs.position('bottom');
+}])
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
     if(window.cordova && window.cordova.plugins.Keyboard) {

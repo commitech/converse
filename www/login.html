@@ -1,0 +1,21 @@
+<ion-pane ng-controller="LoginController">
+  <ion-header-bar class="bar-stable">
+    <h1 class="title">Login</h1>
+  </ion-header-bar>
+  <ion-content>
+    <label class="item item-input">
+      <span class="input-label">Username</span>
+      <input type="text" ng-model="credentials.username"> </input>
+    </label>
+    <label class="item item-input">
+      <span class="input-label">Password</span>
+      <input type="text" ng-model="credentials.password"> </input>
+    </label>
+    <button class="button" ng-click="login()"> Login </button>
+    <button class="button" ng-click="me()"> Me </button>
+    <p>{{loginResponse}} </p>
+    <p> {{ loginError }} </p>
+    <p> {{ meResponse }} </p>
+    <p> {{ meError }} </p>
+  </ion-content>
+</ion-pane>
