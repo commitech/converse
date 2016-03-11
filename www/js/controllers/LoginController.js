@@ -1,5 +1,5 @@
 angular.module('converse')
-.controller('LoginController', ['$scope', '$http', 'AuthService', 'URLS', function($scope, $http, login, URLS) {
+.controller('LoginController', ['$scope', '$state', '$http', 'AuthService', 'URLS', function($scope, $state, $http, login, URLS) {
   $scope.loginResponse = "";
   $scope.loginError = "";
   $scope.meResponse = "";
@@ -12,6 +12,7 @@ angular.module('converse')
     login($scope.credentials.username, $scope.credentials.password)
     .then(function(response) {
       $scope.loginResponse = response;
+      $state.go('home', null, {reload: true});
     }, function(e) {
       $scope.loginError = e;
     });

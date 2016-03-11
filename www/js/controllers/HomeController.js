@@ -1,5 +1,8 @@
 angular.module('converse')
-.controller('HomeController',['$scope', '$http', 'DutyService', 'UserService', 'URLS', function($scope, $http, DutyService, UserService, URLS) {
+.controller('HomeController',['$scope', '$http', '$state', 'DutyService', 'UserService', 'URLS', function($scope, $http, $state, DutyService, UserService, URLS) {
+  function redirectToLogin() {
+    $state.go('login');
+  }
   function refreshDate(date) {
     $scope.date = date;
 
@@ -10,18 +13,23 @@ angular.module('converse')
     );
 
     var getDuty = function(dutyId) {
-      DutyService.getDuty(dutyId).success(function(result) {
-        $scope.duties[dutyId] = result.result;
-      });
+      DutyService.getDuty(dutyId)
+        .success(function(result) {
+          $scope.duties[dutyId] = result.result;
+        })
+        .error(redirectToLogin);
     }
 
     var getUser = function(userId) {
-      UserService.getUser(userId).success(function(result) {
-        $scope.users[userId] = result.result;
-      });
+      UserService.getUser(userId)
+        .success(function(result) {
+          $scope.users[userId] = result.result;
+        })
+        .error(redirectToLogin);
     }
 
     schedulePromise.success(function(result) {
+      console.log(result);
       $scope.duties = {};
       $scope.users = {};
       $scope.dutySchedule = result.result;
@@ -34,7 +42,7 @@ angular.module('converse')
           getUser(schedule.supervisor_id);
         }
       }
-    });
+    }).error(redirectToLogin);
   }
   var currentDate = new Date();
   refreshDate(currentDate);
