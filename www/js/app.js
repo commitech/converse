@@ -25,6 +25,7 @@ angular.module('converse', ['ionic'])
 ])
 .config(['$ionicConfigProvider', function($ionicConfigProvider) {
   $ionicConfigProvider.tabs.position('bottom');
+  $ionicConfigProvider.scrolling.jsScrolling(false);
 }])
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
