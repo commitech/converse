@@ -1,27 +1,36 @@
 angular.module('converse')
-.controller('HomeController',['$scope', '$http', '$state', 'DutyService', 'UserService', 'URLS', function($scope, $http, $state, DutyService, UserService, URLS) {
+.controller('HomeController',['$scope', '$http', '$state', '$q', 'DutyService', 'UserService', 'URLS', function($scope, $http, $state, $q, DutyService, UserService, URLS) {
   function redirectToLogin() {
     $state.go('login');
   }
 
   $scope.me = {};
+  $scope.loading = false;
   UserService.getMe()
     .success(function(result) {
     $scope.me = result.result;
   });
 
   function refreshDate(date) {
+    var promises = [];
+    $scope.loading = true;
+
     $scope.date = date;
     $scope.startTimes = {};
     $scope.dutyIdToSchedule = {};
+    $scope.selection = new Set();
     var schedulePromise = DutyService.getDutySchedule(
       $scope.date.getDate(),
       $scope.date.getMonth() + 1,
       $scope.date.getFullYear()
     );
 
+    promises.push(schedulePromise);
+
     var getDuty = function(dutyId) {
-      DutyService.getDuty(dutyId)
+      var promise = DutyService.getDuty(dutyId);
+      promises.push(promise);
+      promise
         .success(function(result) {
           $scope.duties[dutyId] = result.result;
           if (!$scope.startTimes[result.result.start_time]) {
@@ -33,7 +42,9 @@ angular.module('converse')
     }
 
     var getUser = function(userId) {
-      UserService.getUser(userId)
+      var promise = UserService.getUser(userId)
+      promises.push(promise);
+      promise
         .success(function(result) {
           $scope.users[userId] = result.result;
         })
@@ -55,7 +66,17 @@ angular.module('converse')
         }
       }
     }).error(redirectToLogin);
+
+    $q.all(promises).then(
+      function() {
+        $scope.loading = false;
+      },
+      function() {
+        $scope.loading = false;
+      }
+    );
   }
+
   $scope.$on('$ionicView.enter', function() {
     var currentDate = new Date();
     refreshDate(currentDate);
@@ -87,6 +108,7 @@ angular.module('converse')
       return "white";
     }
   }
+
   $scope.selection = new Set();
   $scope.holdDuty = function(duty) {
     if ($scope.selection.size == 0) {

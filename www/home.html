@@ -1,15 +1,12 @@
-<ion-view ng-controller="HomeController">
-  <ion-nav-title class="bar-stable">
-    <h1 class="title">Duty Schedule</h1>
-  </ion-nav-title>
+<ion-view ng-controller="HomeController" view-title="Duty Schedule">
   <ion-nav-buttons side="primary">
     <button class="button">
       Drop
     </button>
 
   </ion-nav-buttons>
-  <ion-content class="has-tabs">
-    <div class="row" ng-repeat="(startTime, mapping) in startTimes">
+  <ion-content class="has-tabs" >
+    <div class="row" ng-repeat="(startTime, mapping) in startTimes" ng-if="loading == false">
       <div class="col col-20">
         {{startTime}}
       </div>
