@@ -133,4 +133,12 @@ angular.module('converse')
     }
   }
 
+  $scope.dropSelection = function() {
+    if ($scope.selection.size > 0) {
+      var firstElement = $scope.selection.values().next().value;
+      if (isOwnActiveDuty($scope.duties[firstElement])) {
+      }
+    }
+  }
+
 }]);

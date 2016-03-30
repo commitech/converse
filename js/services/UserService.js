@@ -10,8 +10,7 @@ var module = angular.module('converse')
           id: id
         }
       });
-    },
-    getMe: function() {
+    }, getMe: function() {
       return $http({
         method: 'GET',
         url: URLS.BASE + '/api/v1//user/me/',

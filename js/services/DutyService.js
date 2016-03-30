@@ -34,6 +34,18 @@ var module = angular.module('converse')
           id: id
         }
       });
+    },
+    dropDuty: function(user, duties) {
+      return $http({
+        method: 'GET',
+        url: URLS.BASE + '/api/v1/duty/release_duties',
+        withCredentials: true,
+        params: {
+          user: user,
+          specific_duties: duties
+        }
+      });
     }
+
   }
 }]);
