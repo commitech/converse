@@ -1,32 +1,43 @@
+import { UserService } from './services/UserService.js';
+import { AuthService } from './services/AuthService.js';
+import { DutyService } from './services/DutyService.js';
+import { LoginController } from './controllers/LoginController.js';
+import { HomeController } from './controllers/HomeController.js';
+import 'babel-polyfill';
 // Ionic Starter App
 
 // angular.module is a global place for creating, registering and retrieving Angular modules
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
 angular.module('converse', ['ionic'])
-.constant("URLS", {
-  "BASE": "http://nathanajah.me:3000"
+.constant('URLS', {
+  BASE: 'http://nathanajah.me:3000',
 })
 .config(['$stateProvider',
         '$urlRouterProvider',
         function($stateProvider, $urlRouterProvider) {
-          $urlRouterProvider.otherwise('/')
+          $urlRouterProvider.otherwise('/');
 
           $stateProvider.state('login', {
             url: '/login',
-            templateUrl: 'login.html'
+            templateUrl: 'login.html',
           });
 
           $stateProvider.state('home', {
             url: '/',
-            templateUrl: 'home.html' 
+            templateUrl: 'home.html',
           });
-        }
+        },
 ])
 .config(['$ionicConfigProvider', function($ionicConfigProvider) {
   $ionicConfigProvider.tabs.position('bottom');
   $ionicConfigProvider.scrolling.jsScrolling(false);
 }])
+.service('AuthService', AuthService)
+.service('DutyService', DutyService)
+.service('UserService', UserService)
+.controller('LoginController', LoginController)
+.controller('HomeController', HomeController)
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
     if(window.cordova && window.cordova.plugins.Keyboard) {

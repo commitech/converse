@@ -1,4 +1,4 @@
-<ion-view ng-controller="HomeController" view-title="Duty Schedule">
+<ion-view ng-controller="HomeController as homeController" view-title="Duty Schedule">
   <ion-nav-buttons side="primary">
     <button class="button">
       Drop
@@ -6,10 +6,25 @@
 
   </ion-nav-buttons>
   <ion-content class="has-tabs" >
-    <div class="row" ng-repeat="(startTime, mapping) in startTimes" ng-if="loading == false">
+    <div class="row"
+      ng-repeat="time in homeController.getUniqueTimes()"
+      ng-if="homeController.loading == false">
       <div class="col col-20">
-        {{startTime}}
+        {{homeController.formatTime(time)}}
       </div>
+      <div class="col col-40"
+        on-touch="homeController.touchDuty(homeController.getDuty(time, 'cl'))"
+        on-hold="homeController.holdDuty(homeController.getDuty(time, 'cl'))"
+        ng-style="{'background-color': homeController.getColor(homeController.getDuty(time, 'cl'))}">
+        {{homeController.getSupervisor(homeController.getDuty(time, "cl")).name}}
+      </div>
+      <div class="col col-40"
+        on-touch="homeController.touchDuty(homeController.getDuty(time, 'yih'))"
+        on-hold="homeController.holdDuty(homeController.getDuty(time, 'yih'))"
+        ng-style="{'background-color': homeController.getColor(homeController.getDuty(time, 'yih'))}">
+        {{homeController.getSupervisor(homeController.getDuty(time, "yih")).name}}
+      </div>
+    <!--
       <div ng-if="mapping['yih'] !== undefined"
         class="col col-40"
         on-touch="touchDuty(mapping['yih'])"
@@ -24,13 +39,14 @@
         ng-style="{'background-color': getColor(mapping['cl'])}">
         {{users[mapping["cl"]["supervisor"]].name}}
       </div>
+    -->
     </div>
   </ion-content>
   <ion-footer-bar class="bar-stable">
     <div class="buttons">
       <button class="button" ng-click='prevDay()'>Prev</button>
     </div>
-    <h1 class="title"> {{date | date:'EEEE, d MMMM yyyy'}}</h1>
+    <h1 class="title"> {{homeController.currentDate.format('dddd, D MMMM YYYY')}}</h1>
     <div class="buttons">
       <button class="button" ng-click='nextDay()'>Next</button>
     </div>
