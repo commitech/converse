@@ -6,3 +6,4 @@ platforms/
 plugins/
 www/lib/
 www/js/
+*.DS_Store
