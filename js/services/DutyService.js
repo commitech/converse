@@ -1,15 +1,18 @@
 import moment from 'moment';
 import { Schedule } from '../models/Schedule.js';
 import { Duty, DutyIdentifier } from '../models/Duty.js';
+import _ from 'lodash';
 class DutyException {
   constructor(message) {
     this.error = message;
   }
 }
 class DutyService {
-  constructor($http, URLS) {
+  constructor($http, URLS, AuthService) {
     this._$http = $http;
     this._URLS = URLS;
+    this._AuthService = AuthService;
+
     this._schedules = new Map();
     this._duties = new Map();
   }
@@ -96,7 +99,7 @@ class DutyService {
       return response.data.result.map((dutyObject) => {
         const duty = new Duty();
         duty.date = params.date;
-        duty.isFree = false;
+        duty.isFree = dutyObject.is_free;
         duty.scheduleId = dutyObject.duty_id;
         duty.supervisorId = dutyObject.supervisor_id;
         this._duties.set(new DutyIdentifier(duty.scheduleId, duty.date), duty);
@@ -112,9 +115,51 @@ class DutyService {
   clearSchedules() {
     this._schedules.clear();
   }
+
+  async releaseDuties(duties) {
+    try {
+      const user = await this._AuthService.me();
+      const response = await this._$http({
+        method: 'GET',
+        url: this._URLS.BASE + '/api/v1/duty/release_duties/',
+        withCredentials: true,
+        params: {
+          user: user.toServerFormat(),
+          specific_duties: JSON.stringify(_.map(duties, (duty) => duty.toServerFormat())),
+        },
+      });
+      _.map(duties, (duty) => {
+        duty.isFree = true;
+      });
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async grabDuties(duties) {
+    try {
+      const user = await this._AuthService.me();
+      const response = await this._$http({
+        method: 'GET',
+        url: this._URLS.BASE + '/api/v1/duty/grab_duties/',
+        withCredentials: true,
+        params: {
+          user: user.toServerFormat(),
+          specific_duties: JSON.stringify(_.map(duties, (duty) => duty.toServerFormat())),
+        },
+      });
+      _.map(duties, (duty) => {
+        duty.isFree = true;
+      });
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  }
 }
 
-const service = ($http, URLS) => new DutyService($http, URLS);
-service.$inject = ['$http', 'URLS'];
+const service = ($http, URLS, AuthService) => new DutyService($http, URLS, AuthService);
+service.$inject = ['$http', 'URLS', 'AuthService'];
 
 export { service as DutyService };

@@ -59,6 +59,19 @@ class DutySelection {
       }
     }
   }
+
+  getSelectedArray() {
+    return Array.from(this._selection);
+  }
+
+  clearSelection() {
+    this._type = 'EMPTY';
+    this._selection.clear();
+  }
+
+  getSelectionType() {
+    return this._type;
+  }
 }
 
 class HomeController {
@@ -68,10 +81,14 @@ class HomeController {
     this._DutyService = DutyService;
     this._UserService = UserService;
     this._AuthService = AuthService;
+    this.initializeDataStructures();
+    this.changeDate(moment().hour(0).minute(0).second(0).millisecond(0));
+  }
+
+  initializeDataStructures() {
     this.duties = new Map();
     this.schedules = new Map();
     this.users = new Map();
-    this.changeDate(moment().hour(0).minute(0).second(0).millisecond(0));
     this.startTimes = [];
     this.clDuties = new Map();
     this.yihDuties = new Map();
@@ -84,6 +101,10 @@ class HomeController {
 
   getSupervisor(duty) {
     return this.users.get(duty.supervisorId);
+  }
+
+  getSelectionType() {
+    return this.selection.getSelectionType();
   }
 
   getDuty(time, location) {
@@ -133,6 +154,8 @@ class HomeController {
   getColor(duty) {
     if (this.isSelected(duty)) {
       return 'green';
+    } else if (duty.isFree) {
+      return 'red';
     }
   }
 
@@ -140,11 +163,22 @@ class HomeController {
     return this.selection.isSelected(duty);
   }
 
+  async dropSelected() {
+    await this._DutyService.releaseDuties(this.selection.getSelectedArray());
+    await this.refreshData();
+  }
+
+  async grabSelected() {
+    await this._DutyService.grabDuties(this.selection.getSelectedArray());
+    await this.refreshData();
+  }
+
   async refreshData() {
     this.loading = true;
     this._DutyService.clearDuties();
     this._DutyService.clearSchedules();
     this._UserService.clearUsers();
+    this.initializeDataStructures();
     try {
       const duties = await this._DutyService.fetchDuties({
         date: this.currentDate,
@@ -184,6 +218,16 @@ class HomeController {
   async changeDate(date) {
     this.currentDate = date;
     await this.refreshData();
+  }
+
+  async prevDay() {
+    const currentDate = this.currentDate;
+    this.changeDate(currentDate.subtract(1, 'day'));
+  }
+
+  async nextDay() {
+    const currentDate = this.currentDate;
+    this.changeDate(currentDate.add(1, 'day'));
   }
 }
 

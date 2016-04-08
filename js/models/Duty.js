@@ -6,6 +6,15 @@ class Duty {
     this.isFree = false;
   }
 
+  toServerFormat() {
+    return {
+      duty_id: this.scheduleId,
+      day: this.date.date(),
+      month: this.date.month(),
+      year: this.date.year(),
+    };
+  }
+
   isOwnedBy(supervisorId) {
     return !this.isFree && this.supervisorId === supervisorId;
   }

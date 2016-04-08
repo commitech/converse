@@ -9,6 +9,9 @@ class Schedule
     this.supervisorId = supervisorId;
   }
 
+  toServerFormat() {
+  }
+
   getStartDateTime(date) {
     return date.clone().add(this.startTime);
   }

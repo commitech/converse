@@ -14,6 +14,23 @@ class User {
     this.tracking = null;
     this.isDuty = null;
   }
+
+  toServerFormat() {
+    return {
+      id: this.id,
+      name: this.name,
+      matric_number: this.matricNumber,
+      contact: this.contact,
+      email: this.email,
+      cell: this.cell,
+      position: this.position,
+      is_notification: this.isNotification,
+      status: this.status,
+      is_admin: this.isAdmin,
+      tracking: this.tracking,
+      is_duty: this.isDuty,
+    };
+  }
 }
 
 User.fromJSONObject = (obj) => {

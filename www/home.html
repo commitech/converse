@@ -1,7 +1,14 @@
 <ion-view ng-controller="HomeController as homeController" view-title="Duty Schedule">
   <ion-nav-buttons side="primary">
-    <button class="button">
+    <button
+      class="button"
+      ng-click="homeController.dropSelected()"
+      ng-if="homeController.getSelectionType() == 'OWN_ACTIVE'">
       Drop
+    </button>
+    <button class="button" ng-click="homeController.grabSelected()"
+      ng-if="homeController.getSelectionType() == 'FREE'">
+      Grab
     </button>
 
   </ion-nav-buttons>
@@ -24,31 +31,15 @@
         ng-style="{'background-color': homeController.getColor(homeController.getDuty(time, 'yih'))}">
         {{homeController.getSupervisor(homeController.getDuty(time, "yih")).name}}
       </div>
-    <!--
-      <div ng-if="mapping['yih'] !== undefined"
-        class="col col-40"
-        on-touch="touchDuty(mapping['yih'])"
-        on-hold="holdDuty(mapping['yih'])"
-        ng-style="{'background-color': getColor(mapping['yih'])}">
-        {{users[mapping["yih"]["supervisor"]].name}}
-      </div>
-      <div ng-if="mapping['cl'] !== undefined"
-        class="col col-40"
-        on-touch="touchDuty(mapping['cl'])"
-        on-hold="holdDuty(mapping['cl'])"
-        ng-style="{'background-color': getColor(mapping['cl'])}">
-        {{users[mapping["cl"]["supervisor"]].name}}
-      </div>
-    -->
     </div>
   </ion-content>
   <ion-footer-bar class="bar-stable">
     <div class="buttons">
-      <button class="button" ng-click='prevDay()'>Prev</button>
+      <button class="button" ng-click='homeController.prevDay()'>Prev</button>
     </div>
     <h1 class="title"> {{homeController.currentDate.format('dddd, D MMMM YYYY')}}</h1>
     <div class="buttons">
-      <button class="button" ng-click='nextDay()'>Next</button>
+      <button class="button" ng-click='homeController.nextDay()'>Next</button>
     </div>
   </ion-footer-bar>
 </ion-view>
